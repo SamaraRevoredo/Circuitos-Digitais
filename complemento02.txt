@@ -1,0 +1,22 @@
+entity complemento_02 is    
+    port (binario : in bit_vector (5 downto 0);
+          c2 : out bit_vector (6 downto 0));
+end complemento_02;
+
+architecture atv of complemento_02 is
+  signal negado : bit_vector(6 downto 0);
+  component somador_7bit 
+   port(A : in bit_vector(6 downto 0);        
+	      resul : out bit_vector(6 downto 0));
+  end component;
+  begin 
+    negado(6) <= '0';
+    negado(5) <= not binario(5);
+    negado(4) <= not binario(4);
+    negado(3) <= not binario(3);
+    negado(2) <= not binario(2);
+    negado(1) <= not binario(1);
+    negado(0) <= not binario(0);
+    complemento02 : somador_7bit port map(negado,c2);
+    
+end atv;

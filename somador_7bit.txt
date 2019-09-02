@@ -1,0 +1,28 @@
+entity somador_7bit is
+   port(A : in bit_vector(6 downto 0);        
+	      resul : out bit_vector(6 downto 0));
+end somador_7bit;
+architecture soma7 of somador_7bit is
+  signal C_in : bit_vector(4 downto 0);
+  signal C_out : bit_vector(5 downto 0);
+     component somador_1bit 
+        port(A : in bit;
+             B : in bit;
+             Cin : in bit;
+             S, Cout : out bit);
+     end component;
+     begin
+      soma0 : somador_1bit port map(A(0),'1','0',resul(0),C_out(0)); 
+      C_in(0) <= C_out(0);
+      soma1 : somador_1bit port map(A(1),'0',C_in(0),resul(1),C_out(1)); 
+      C_in(1) <= C_out(1);
+      soma2 : somador_1bit port map(A(2),'0',C_in(1),resul(2),C_out(2)); 
+      C_in(2) <= C_out(2);
+      soma3 : somador_1bit port map(A(3),'0',C_in(2),resul(3),C_out(3)); 
+      C_in(3) <= C_out(3);
+      soma4 : somador_1bit port map(A(4),'0',C_in(3),resul(4),C_out(4)); 
+      C_in(4) <= C_out(4);
+      soma5 : somador_1bit port map(A(5),'0',C_in(0),resul(5),C_out(5)); 
+      resul(6) <= C_out(5);
+end soma7;
+

@@ -1,0 +1,22 @@
+entity multiplexador is
+  port(Binario_in : in bit_vector(5 downto 0);
+       Seletor : in bit;
+       Binario_out : out bit_vector(6 downto 0));
+end multiplexador;
+
+architecture atividade of multiplexador is
+  signal Comp2 : bit_vector (6 downto 0);
+  component complemento_02
+    port (binario : in bit_vector (5 downto 0);
+          c2 : out bit_vector (6 downto 0));
+  end component;
+  begin 
+    comp_2 : complemento_02 port map(binario_in,comp2); 
+    Binario_out(6) <= ('0' and (not seletor)) or (comp2(6) and seletor);
+    Binario_out(5) <= (Binario_in(5) and (not seletor)) or (comp2(5) and seletor);
+    Binario_out(4) <= (Binario_in(4) and (not seletor)) or (comp2(4) and seletor);
+    Binario_out(3) <= (Binario_in(3) and (not seletor)) or (comp2(3) and seletor);
+    Binario_out(2) <= (Binario_in(2) and (not seletor)) or (comp2(2) and seletor);
+    Binario_out(1) <= (Binario_in(1) and (not seletor)) or (comp2(1) and seletor);
+    Binario_out(0) <= (Binario_in(0) and (not seletor)) or (comp2(0) and seletor);
+end atividade;

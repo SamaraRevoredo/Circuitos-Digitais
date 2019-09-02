@@ -1,0 +1,83 @@
+entity atividade05 is
+  port (B : in bit_vector (6 downto 0); 
+       BCD_dezenas, BCD_unidades : out bit_vector (3 downto 0));
+end atividade05;
+
+architecture main of atividade05 is
+  signal Bin_out : bit_vector(6 downto 0);
+  Signal Bloco1_A, Bloco1_S : bit_vector(3 downto 0);
+  Signal Bloco2_A, Bloco2_S : bit_vector(3 downto 0);
+  Signal Bloco3_A, Bloco3_S : bit_vector(3 downto 0);
+  Signal Bloco4_A, Bloco4_S : bit_vector(3 downto 0);
+  Signal Bloco5_A, Bloco5_S : bit_vector(3 downto 0);
+  Signal Bloco6_A, Bloco6_S : bit_vector(3 downto 0);
+  Signal Bloco7_A, Bloco7_S : bit_vector(3 downto 0);
+  Signal bcd : bit_vector(7 downto 0);
+
+  component multiplexador
+  port(Binario_in : in bit_vector(5 downto 0);
+       Seletor : in bit;
+       Binario_out : out bit_vector(6 downto 0));
+  end component;
+  component bloco
+  port (A : in bit_vector(3 downto 0);
+        S : out bit_vector(3 downto 0));
+  end component;
+  begin
+    multiplex : multiplexador port map(B(5 downto 0),B(6),Bin_out);
+      --BLOCO 01
+  Bloco1_A(3) <= '0';
+  Bloco1_A(2) <= '0';
+  Bloco1_A(1) <= Bin_out(6);
+  Bloco1_A(0) <= Bin_out(5);
+  Bloco1 : bloco port map(Bloco1_A,Bloco1_S);
+  --BLOCO 02
+  Bloco2_A(3) <= Bloco1_S(2);
+  Bloco2_A(2) <= Bloco1_S(1);
+  Bloco2_A(1) <= Bloco1_S(0);
+  Bloco2_A(0) <= Bin_out(4);
+  Bloco2 : bloco port map(Bloco2_A,Bloco2_S);  
+  --BLOCO 03
+  Bloco3_A(3) <= Bloco2_S(2);
+  Bloco3_A(2) <= Bloco2_S(1);
+  Bloco3_A(1) <= Bloco2_S(0);
+  Bloco3_A(0) <= Bin_out(3);
+  Bloco3 : bloco port map(Bloco3_A,Bloco3_S); 
+  --BLOCO 04
+  Bloco4_A(3) <= '0';
+  Bloco4_A(2) <= Bloco1_S(3);
+  Bloco4_A(1) <= Bloco2_S(3);
+  Bloco4_A(0) <= Bloco3_S(3);
+  Bloco4 : bloco port map(Bloco4_A,Bloco4_S); 
+  --BLOCO 05
+  Bloco5_A(3) <= Bloco3_S(2);
+  Bloco5_A(2) <= Bloco3_S(1);
+  Bloco5_A(1) <= Bloco3_S(0);
+  Bloco5_A(0) <= Bin_out(2);
+  Bloco5 : bloco port map(Bloco5_A,Bloco5_S);
+  --BLOCO 06
+  Bloco6_A(3) <= Bloco4_S(2);
+  Bloco6_A(2) <= Bloco4_S(1);
+  Bloco6_A(1) <= Bloco4_S(0);
+  Bloco6_A(0) <= Bloco5_S(3);
+  Bloco6 : bloco port map(Bloco6_A,Bloco6_S);
+  --BLOCO 06
+  Bloco7_A(3) <= Bloco5_S(2);
+  Bloco7_A(2) <= Bloco5_S(1);
+  Bloco7_A(1) <= Bloco5_S(0);
+  Bloco7_A(0) <= Bin_out(1);
+  Bloco7 : bloco port map(Bloco7_A,Bloco7_S);
+  --Saída em BCD
+  BCD_dezenas(3) <= Bloco6_S(2);
+  BCD_dezenas(2) <= Bloco6_S(1);
+  BCD_dezenas(1) <= Bloco6_S(0);
+  BCD_dezenas(0) <= Bloco7_S(3);
+  BCD_unidades(3) <= Bloco7_S(2);
+  BCD_unidades(2) <= Bloco7_S(1);
+  BCD_unidades(1) <= Bloco7_S(0);
+  BCD_unidades(0) <= Bin_out(0);
+  
+    
+end main;
+  
+
